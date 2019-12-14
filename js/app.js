@@ -51,16 +51,48 @@ class Todo {
 }
 
 class Urgent extends Todo {
-    constructor(title, description, dueDate, dueTime, priority = 'Urgent', completed = false) {
+    constructor(title, description, dueDate, dueTime, sortAZ, sortDate, priority = 'Urgent', completed = false) {
         super(title, description, dueDate, dueTime, completed)
         this.priority = priority
+        this.sortAZ = sortAZ
+        this.sortDate = sortDate
+
+        this.sortAZ.addEventListener('change', ({target}) => {
+            if (target.checked) {
+                urgentTodoObject.sortAZ()
+                urgentSortDate.checked = false
+            }
+        })
+        
+        this.sortDate.addEventListener('change', ({target}) => {
+            if (target.checked) {
+                urgentTodoObject.sortDate()
+                urgentSortAZ.checked = false;
+            }
+        })
     }
 }
 
 class Minor extends Todo {
-    constructor(title, description, dueDate, dueTime, priority = 'Minor', completed = false) {
+    constructor(title, description, dueDate, dueTime, sortAZ, sortDate, priority = 'Minor', completed = false) {
         super(title, description, dueDate, dueTime, completed)
         this.priority = priority
+        this.sortAZ = sortAZ
+        this.sortDate = sortDate
+
+        this.sortAZ.addEventListener('change', ({target}) => {
+            if (target.checked) {
+                minorTodoObject.sortAZ()
+                minorSortDate.checked = false;
+            }
+        })
+
+        this.sortDate.addEventListener('change', ({target}) => {
+            if (target.checked) {
+                minorTodoObject.sortDate()
+                minorSortAZ.checked = false;
+            }
+        })
     }
 }
 
@@ -85,25 +117,11 @@ addMinor.addEventListener('submit', (e) => {
         e.preventDefault()
         return
     }
-    const newMinor = new Minor(minorTitle.value, minorDesc.value, minorDate.value, minorTime.value)
+    const newMinor = new Minor(minorTitle.value, minorDesc.value, minorDate.value, minorTime.value, minorSortAZ, minorSortDate)
     minorTodoObject.minorTodoArray.push(newMinor)
     minorTodoObject.renderTodoTasks()
     resetInputs()
     e.preventDefault()
-})
-
-minorSortAZ.addEventListener('change', ({target}) => {
-    if (target.checked) {
-        minorTodoObject.sortAZ()
-        minorSortDate.checked = false;
-    }
-})
-
-minorSortDate.addEventListener('change', ({target}) => {
-    if (target.checked) {
-        minorTodoObject.sortDate()
-        minorSortAZ.checked = false;
-    }
 })
 
 
@@ -127,25 +145,11 @@ addUrgent.addEventListener('submit', (e) => {
         e.preventDefault()
         return
     }
-    const newUrgent = new Urgent(urgentTitle.value, urgentDesc.value, urgentDate.value, urgentTime.value)
+    const newUrgent = new Urgent(urgentTitle.value, urgentDesc.value, urgentDate.value, urgentTime.value, urgentSortAZ, urgentSortDate)
     urgentTodoObject.urgentTodoArray.push(newUrgent)
     urgentTodoObject.renderTodoTasks()
     resetInputs()
     e.preventDefault()
-})
-
-urgentSortAZ.addEventListener('change', ({target}) => {
-    if (target.checked) {
-        urgentTodoObject.sortAZ()
-        urgentSortDate.checked = false
-    }
-})
-
-urgentSortDate.addEventListener('change', ({target}) => {
-    if (target.checked) {
-        urgentTodoObject.sortDate()
-        urgentSortAZ.checked = false;
-    }
 })
 
 
